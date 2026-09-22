@@ -1,6 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.props" Condition="Exists('..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -40,7 +39,14 @@
     <Reference Include="0Harmony">
       <Private>False</Private>
     </Reference>
+    <Reference Include="DV.BrakeSystem">
+      <HintPath>$(DvInstallDir)\DerailValley_Data\Managed\DV.BrakeSystem.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="WorldStreamer">
       <Private>False</Private>
     </Reference>
     <Reference Include="CommandTerminal">
@@ -88,9 +94,19 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(DvInstallDir)\DerailValley_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(DvInstallDir)\DerailValley_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>$(DvInstallDir)\DerailValley_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(DvInstallDir)\DerailValley_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
@@ -147,6 +163,8 @@
     <Compile Include="Main.cs" />
     <Compile Include="Model\DetailedCargoGroup.cs" />
     <Compile Include="Model\EmptyTrainCarTypeDestinations.cs" />
+    <Compile Include="Spawning\CarPerformanceOptimizer.cs" />
+    <Compile Include="Utilities\DebugOverlay.cs" />
     <Compile Include="Model\IReassignableTrainCarRelationWithMaxTrackLength.cs" />
     <Compile Include="ModInteraction\PersistentJobsModInteractionFeatures.cs" />
     <Compile Include="Persistence\StationIdCarSpawningPersistence.cs" />
@@ -163,7 +181,7 @@
     <Compile Include="Utilities\TrackUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <PackageReference Include="Krafs.Publicizer" Version="2.2.1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="PostBuildCopyWithBackup" AfterTargets="Build">
@@ -180,14 +198,7 @@
     <!-- Copy PDB if present -->
     <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFiles="$(DeployPdb)" Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
   </Target>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.props'))" />
-    <Error Condition="!Exists('..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.targets'))" />
-  </Target>
-  <Import Project="..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.targets" Condition="Exists('..\packages\Krafs.Publicizer.2.2.1\build\Krafs.Publicizer.targets')" />
+
   <ItemGroup>
     <Publicize Include="Assembly-CSharp:DV.Console.MoveCarsCoro" />
     <Publicize Include="Assembly-CSharp:EmptyHaulJobProceduralGenerator.CalculateBonusTimeLimitAndWage" />
@@ -214,6 +225,7 @@
     <Publicize Include="Assembly-CSharp:JobSaveManager.GetYardTrackWithId" />
     <Publicize Include="Assembly-CSharp:JobSaveManager.LoadJobChain" />
     <Publicize Include="Assembly-CSharp:DV.Logic.Job.TrackID.trackType" />
+    <Publicize Include="Assembly-CSharp:WorldMover" />
   </ItemGroup>
   <ItemGroup />
 </Project>

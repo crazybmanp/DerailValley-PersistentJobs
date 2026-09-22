@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using PersistentJobsMod.Model;
 using PersistentJobsMod.ModInteraction;
 using PersistentJobsMod.Utilities;
@@ -69,6 +69,9 @@ namespace PersistentJobsMod {
             modEntry.OnGUI = OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
 
+            Spawning.CarPerformanceOptimizer.Create();
+            Utilities.DebugOverlay.Create();
+
             WorldStreamingInit.LoadingFinished += WorldStreamingInitLoadingFinished;
             //when coming from a reload things need to be re-initilized
             if (WorldStreamingInit.IsStreamingDone) SetupOnReload();
@@ -83,6 +86,8 @@ namespace PersistentJobsMod {
             {
                 Settings.Save(modEntry);
 
+                Spawning.CarPerformanceOptimizer.Shutdown();
+                Utilities.DebugOverlay.Shutdown();
                 PaxJobsCompat.Unload();
                 Harmony.UnpatchAll(modEntry.Info.Id);
 
